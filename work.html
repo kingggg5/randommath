@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const startButton = document.getElementById("startButton");
+            const num1Input = document.getElementById("num1");
+            const num2Input = document.getElementById("num2");
+            const submitButton = document.getElementById("submitButton");
+            const resultInput = document.getElementById("result");
+            const resultMessage = document.getElementById("resultMessage");
+            const scoreHeading = document.getElementById("scoreHeading");
+            const operationLabel = document.getElementById("operationLabel");
+            
+            let score = 0;
+            let totalQuestions = 0;
+            
+            startButton.addEventListener("click", function() {
+                const randomNum1 = Math.floor(Math.random() * 100);
+                const randomNum2 = Math.floor(Math.random() * 100);
+                
+                num1Input.value = randomNum1;
+                num2Input.value = randomNum2;
+            });
+    
+            const operationButtons = document.querySelectorAll('input[name="operation"]');
+            
+            operationButtons.forEach(button => {
+                button.addEventListener("change", function() {
+                    operationLabel.textContent = button.value;
+                });
+            });
+    
+            submitButton.addEventListener("click", function() {
+                let selectedOperation = "";
+    
+                operationButtons.forEach(button => {
+                    if (button.checked) {
+                        selectedOperation = button.value;
+                    }
+                });
+    
+                if (selectedOperation === "") {
+                    resultMessage.textContent = "Please select an operation.";
+                    return;
+                }
+    
+                let result = 0;
+    
+                if (selectedOperation === "+") {
+                    result = parseInt(num1Input.value) + parseInt(num2Input.value);
+                } else if (selectedOperation === "-") {
+                    result = parseInt(num1Input.value) - parseInt(num2Input.value);
+                } else if (selectedOperation === "*") {
+                    result = parseInt(num1Input.value) * parseInt(num2Input.value);
+                } else if (selectedOperation === "/") {
+                    result = parseInt(num1Input.value) / parseInt(num2Input.value);
+                }
+                
+                const userResult = parseInt(resultInput.value);
+    
+                if (userResult === result) {
+                    score += 1;
+                    resultMessage.textContent = "Correct! You earned 1 point.";
+                } else {
+                    resultMessage.textContent = "Incorrect. Try again. You earned 0 points.";
+                }
+    
+                totalQuestions++; // เพิ่มจำนวนคำถามทั้งหมด
+                scoreHeading.textContent = "score: " + score + "/" + totalQuestions;
+    
+                resultInput.value = "";
+            });
+        });
+    </script>
+    
+          
+</head>
+<body>
+    <div class="main-container">
+        <h1 id="main">RANDOM MATH</h1>
+        <div class="operation-buttons">
+        <button class="button-74" id="startButton">Start</button>
+        <h2 id="scoreHeading">score</h2>
+        <label for="num1">number</label>
+        <input type="text" id="num1" name="num1">
+        <label for="num2"><span id="operationLabel">+</span></label>
+        <input type="text" id="num2" name="num2">
+        <label for="zname">=</label>
+        <input type="number" id="result" name="result" min="0" max="100">
+        <label for="operation">Choose operation:</label>
+        <div class="operation-buttons">
+            <label>
+                <input type="radio" name="operation" value="+">+
+            </label>
+            <label>
+                <input type="radio" name="operation" value="-">-
+            </label>
+            <label>
+                <input type="radio" name="operation" value="*">*
+            </label>
+            <label>
+                <input type="radio" name="operation" value="/">/
+            </label>
+             </div>
+        </div>
+        <button class="button-74" type="button" id="submitButton">Submit</button>
+        <div id="resultMessage" class="result-message-box"></div>
+        </div>
+</body>
+</html>
